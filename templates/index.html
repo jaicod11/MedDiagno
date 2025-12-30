@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block title %}Home - Medical Diagnosis Assistant{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8 mx-auto text-center">
+        <div class="hero-section p-5 bg-light rounded mb-5">
+            <h1 class="display-4 mb-4">Medical Diagnosis Assistant</h1>
+            <p class="lead mb-4">AI-powered diagnostic tools for diabetes, heart disease, and skin cancer detection</p>
+            <div class="alert alert-info" role="alert">
+                <strong>Note:</strong> This tool is for educational purposes only. Always consult a healthcare professional for medical diagnosis.
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-4 mb-4">
+        <div class="card h-100 shadow-sm">
+            <div class="card-body text-center">
+                <div class="card-icon mb-3">
+                    <i class="fas fa-tint fa-3x text-primary"></i>
+                </div>
+                <h3 class="card-title">Diabetes Prediction</h3>
+                <p class="card-text">Predict the likelihood of diabetes based on clinical parameters like glucose levels, BMI, and age.</p>
+                <a href="{{ url_for('diabetes') }}" class="btn btn-primary mt-auto">Use Tool</a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4 mb-4">
+        <div class="card h-100 shadow-sm">
+            <div class="card-body text-center">
+                <div class="card-icon mb-3">
+                    <i class="fas fa-heart fa-3x text-danger"></i>
+                </div>
+                <h3 class="card-title">Heart Disease Prediction</h3>
+                <p class="card-text">Assess the risk of heart disease using factors like cholesterol levels, blood pressure, and ECG results.</p>
+                <a href="{{ url_for('heart') }}" class="btn btn-primary mt-auto">Use Tool</a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4 mb-4">
+        <div class="card h-100 shadow-sm">
+            <div class="card-body text-center">
+                <div class="card-icon mb-3">
+                    <i class="fas fa-user-md fa-3x text-success"></i>
+                </div>
+                <h3 class="card-title">Skin Cancer Detection</h3>
+                <p class="card-text">Upload an image of a skin lesion for AI-powered analysis and classification.</p>
+                <a href="{{ url_for('skin_cancer') }}" class="btn btn-primary mt-auto">Use Tool</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-5">
+    <div class="col-md-10 mx-auto">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h3 class="mb-0">Important Disclaimer</h3>
+            </div>
+            <div class="card-body">
+                <p>This application is intended for educational and informational purposes only. The predictions provided by this tool are based on machine learning models and should not be considered as medical advice or a substitute for professional medical diagnosis.</p>
+                <p>Always consult with qualified healthcare providers for any health concerns or before making any medical decisions. The developers of this application are not responsible for any medical decisions made based on the predictions provided.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

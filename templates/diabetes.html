@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+
+{% block title %}Diabetes Prediction - Medical Diagnosis Assistant{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8 mx-auto">
+        <h1 class="text-center mb-4">Diabetes Prediction</h1>
+        
+        <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h3 class="mb-0">Enter Patient Information</h3>
+            </div>
+            <div class="card-body">
+                <form id="diabetesForm">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="pregnancies" class="form-label">Number of Pregnancies</label>
+                                <input type="number" class="form-control" id="pregnancies" name="pregnancies" min="0" max="20" required>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="glucose" class="form-label">Glucose Level (mg/dL)</label>
+                                <input type="number" class="form-control" id="glucose" name="glucose" min="0" max="300" required>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="blood_pressure" class="form-label">Blood Pressure (mm Hg)</label>
+                                <input type="number" class="form-control" id="blood_pressure" name="blood_pressure" min="0" max="150" required>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="skin_thickness" class="form-label">Skin Thickness (mm)</label>
+                                <input type="number" class="form-control" id="skin_thickness" name="skin_thickness" min="0" max="100" required>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="insulin" class="form-label">Insulin Level (mu U/ml)</label>
+                                <input type="number" class="form-control" id="insulin" name="insulin" min="0" max="900" required>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="bmi" class="form-label">BMI</label>
+                                <input type="number" step="0.1" class="form-control" id="bmi" name="bmi" min="0" max="70" required>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="diabetes_pedigree" class="form-label">Diabetes Pedigree Function</label>
+                                <input type="number" step="0.001" class="form-control" id="diabetes_pedigree" name="diabetes_pedigree" min="0" max="2.5" required>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="age" class="form-label">Age</label>
+                                <input type="number" class="form-control" id="age" name="age" min="0" max="120" required>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="text-center mt-4">
+                        <button type="submit" class="btn btn-primary btn-lg">Predict Diabetes Risk</button>
+                    </div>
+                </form>
+                
+                <div id="result" class="mt-4" style="display: none;">
+                    <div class="alert alert-info">
+                        <h4 class="alert-heading">Prediction Result</h4>
+                        <p id="predictionText"></p>
+                    </div>
+                </div>
+                
+                <div id="error" class="mt-4" style="display: none;">
+                    <div class="alert alert-danger">
+                        <h4 class="alert-heading">Error</h4>
+                        <p id="errorText"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card mt-4">
+            <div class="card-header bg-light">
+                <h3 class="mb-0">About This Tool</h3>
+            </div>
+            <div class="card-body">
+                <p>This diabetes prediction tool uses machine learning to assess the risk of diabetes based on clinical parameters. The model analyzes factors such as glucose levels, BMI, age, and other health indicators to provide a prediction.</p>
+                <p><strong>Note:</strong> This tool is for educational purposes only and should not be used as a substitute for professional medical advice.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
