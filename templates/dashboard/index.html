@@ -1,0 +1,163 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block page_title %}Dashboard{% endblock %}
+{% block breadcrumb %}Overview of your activity{% endblock %}
+
+{% block content %}
+
+<!-- Stats grid -->
+<div class="stats-grid animate-in">
+  <div class="stat-card">
+    <div class="stat-icon teal">🔬</div>
+    <div class="stat-body">
+      <div class="stat-value" style="color:var(--primary);">{{ total }}</div>
+      <div class="stat-label">Total Predictions</div>
+      <div class="stat-sub">All time</div>
+    </div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon amber">🩸</div>
+    <div class="stat-body">
+      <div class="stat-value" style="color:#f59e0b;">{{ counts.diabetes }}</div>
+      <div class="stat-label">Diabetes Tests</div>
+      <div class="stat-sub">XGBoost model</div>
+    </div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon red">❤️</div>
+    <div class="stat-body">
+      <div class="stat-value" style="color:var(--danger);">{{ counts.heart }}</div>
+      <div class="stat-label">Heart Checks</div>
+      <div class="stat-sub">Gradient Boosting</div>
+    </div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-icon blue">🧬</div>
+    <div class="stat-body">
+      <div class="stat-value" style="color:var(--info);">{{ counts.skin }}</div>
+      <div class="stat-label">Skin Analyses</div>
+      <div class="stat-sub">Image classifier</div>
+    </div>
+  </div>
+</div>
+
+<!-- Quick actions -->
+<div class="section-header">
+  <div class="section-title">Run a Diagnosis</div>
+</div>
+<div class="actions-grid mb-24">
+  <a href="{{ url_for('predictions.diabetes_page') }}" class="action-card diabetes">
+    <div class="action-emoji">🩸</div>
+    <div>
+      <div class="action-label">Diabetes Screening</div>
+      <div class="action-desc">8 clinical markers · XGBoost · 96.7% accuracy</div>
+    </div>
+  </a>
+  <a href="{{ url_for('predictions.heart_page') }}" class="action-card heart">
+    <div class="action-emoji">❤️</div>
+    <div>
+      <div class="action-label">Heart Disease</div>
+      <div class="action-desc">13 cardiovascular parameters · 88.7% accuracy</div>
+    </div>
+  </a>
+  <a href="{{ url_for('predictions.skin_page') }}" class="action-card skin">
+    <div class="action-emoji">🔬</div>
+    <div>
+      <div class="action-label">Skin Cancer Analysis</div>
+      <div class="action-desc">Image upload · feature extraction · 99.8% accuracy</div>
+    </div>
+  </a>
+</div>
+
+<!-- Charts + Recent -->
+<div class="grid-2 mb-24">
+
+  <!-- Activity chart -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title">Weekly Activity</div>
+      <span class="text-small text-muted">Last 7 days</span>
+    </div>
+    <div class="card-body">
+      <div class="chart-wrap">
+        <canvas id="activityChart"
+                data-activity='{{ activity | tojson }}'></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- Type distribution -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title">Prediction Types</div>
+      <span class="text-small text-muted">All time</span>
+    </div>
+    <div class="card-body">
+      {% if total > 0 %}
+        <div class="chart-wrap">
+          <canvas id="typeChart"
+                  data-counts='{{ counts | tojson }}'></canvas>
+        </div>
+      {% else %}
+        <div class="empty-state">
+          <div class="empty-icon">📊</div>
+          <p>Run your first diagnosis to see stats here.</p>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+
+</div>
+
+<!-- Recent predictions -->
+<div class="card animate-in">
+  <div class="card-header">
+    <div class="card-title">Recent Predictions</div>
+    <a href="{{ url_for('predictions.history') }}" class="btn btn-outline btn-sm">View all</a>
+  </div>
+  <div class="card-body" style="padding-top:0;">
+    {% if recents %}
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Type</th>
+              <th>Result</th>
+              <th>Confidence</th>
+              <th>Risk</th>
+              <th>When</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for p in recents %}
+            <tr>
+              <td>
+                <span style="font-size:1rem;">{{ p.type_icon }}</span>
+                <span style="margin-left:6px;font-weight:500;">{{ p.type_label }}</span>
+              </td>
+              <td style="font-size:0.85rem;">{{ p.result }}</td>
+              <td>
+                <div style="display:flex;align-items:center;gap:8px;">
+                  <div style="width:60px;height:6px;background:var(--border);border-radius:3px;overflow:hidden;">
+                    <div style="width:{{ p.confidence }}%;height:100%;background:{{ '#34d399' if p.risk_level == 'low' else '#ff5c72' }};border-radius:3px;"></div>
+                  </div>
+                  <span style="font-size:0.8rem;font-weight:500;">{{ p.confidence | pct }}</span>
+                </div>
+              </td>
+              <td><span class="badge badge-{{ p.risk_level }}">{{ p.risk_level | upper }}</span></td>
+              <td class="text-muted text-small">{{ p.created_at | timeago }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% else %}
+      <div class="empty-state">
+        <div class="empty-icon">🩺</div>
+        <p>No predictions yet. <a href="{{ url_for('predictions.diabetes_page') }}" style="color:var(--primary);">Run your first diagnosis →</a></p>
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+{% endblock %}

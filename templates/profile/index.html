@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+{% block title %}Profile{% endblock %}
+{% block page_title %}My Profile{% endblock %}
+{% block breadcrumb %}Account → Profile{% endblock %}
+
+{% block content %}
+
+<div class="profile-header animate-in">
+  <div class="avatar avatar-lg">{{ current_user.initials }}</div>
+  <div class="profile-info">
+    <h2>{{ current_user.name }}</h2>
+    <p>{{ current_user.email }}</p>
+    <p style="margin-top:4px;font-size:0.78rem;color:var(--text-light);">
+      Member since {{ current_user.created_at.strftime('%B %Y') }} ·
+      Last active {{ current_user.last_login | timeago if current_user.last_login else 'never' }}
+    </p>
+  </div>
+</div>
+
+<!-- Stats -->
+<div class="card mb-24 animate-in">
+  <div class="card-header"><div class="card-title">Prediction Summary</div></div>
+  <div class="card-body">
+    <div class="profile-stats">
+      <div class="profile-stat">
+        <div class="num">{{ total }}</div>
+        <div class="lbl">Total Predictions</div>
+      </div>
+      <div class="profile-stat">
+        <div class="num" style="color:#f59e0b;">{{ counts.diabetes }}</div>
+        <div class="lbl">🩸 Diabetes Tests</div>
+      </div>
+      <div class="profile-stat">
+        <div class="num" style="color:#ff5c72;">{{ counts.heart }}</div>
+        <div class="lbl">❤️ Heart Checks</div>
+      </div>
+    </div>
+    <div class="profile-stats" style="margin-top:14px;">
+      <div class="profile-stat">
+        <div class="num" style="color:#60a5fa;">{{ counts.skin }}</div>
+        <div class="lbl">🔬 Skin Analyses</div>
+      </div>
+      {% set high_count = recents | selectattr('risk_level', 'equalto', 'high') | list | length %}
+      <div class="profile-stat">
+        <div class="num" style="color:var(--danger);">{{ high_count }}</div>
+        <div class="lbl">High Risk Results</div>
+      </div>
+      {% set low_count = total - high_count %}
+      <div class="profile-stat">
+        <div class="num" style="color:var(--success);">{{ low_count }}</div>
+        <div class="lbl">Low Risk Results</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="grid-2">
+
+  <!-- Account Info -->
+  <div class="card animate-in">
+    <div class="card-header"><div class="card-title">Account Information</div></div>
+    <div class="card-body">
+      <div style="display:flex;flex-direction:column;gap:0;font-size:0.87rem;">
+        <div style="display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--border);">
+          <span class="text-muted">Full Name</span><strong>{{ current_user.name }}</strong>
+        </div>
+        <div style="display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--border);">
+          <span class="text-muted">Email</span><span>{{ current_user.email }}</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--border);">
+          <span class="text-muted">Member Since</span><span>{{ current_user.created_at.strftime('%d %B %Y') }}</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;padding:11px 0;">
+          <span class="text-muted">Last Login</span>
+          <span>{{ current_user.last_login.strftime('%d %b %Y, %H:%M') if current_user.last_login else '—' }}</span>
+        </div>
+      </div>
+      <div style="margin-top:16px;">
+        <a href="{{ url_for('auth.logout') }}" class="btn btn-outline btn-sm" style="color:var(--danger);border-color:var(--danger);">
+          Sign Out
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Recent activity -->
+  <div class="card animate-in">
+    <div class="card-header">
+      <div class="card-title">Recent Activity</div>
+      <a href="{{ url_for('predictions.history') }}" class="btn btn-outline btn-sm">View all</a>
+    </div>
+    <div class="card-body" style="padding-top:0;">
+      {% if recents %}
+        {% for p in recents[:8] %}
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);{% if loop.last %}border-bottom:none;{% endif %}">
+          <div style="display:flex;align-items:center;gap:10px;">
+            <span style="font-size:1.2rem;">{{ p.type_icon }}</span>
+            <div>
+              <div style="font-size:0.85rem;font-weight:500;">{{ p.result }}</div>
+              <div style="font-size:0.75rem;color:var(--text-muted);">{{ p.type_label }} · {{ p.created_at | timeago }}</div>
+            </div>
+          </div>
+          <span class="badge badge-{{ p.risk_level }}">{{ p.risk_level | upper }}</span>
+        </div>
+        {% endfor %}
+      {% else %}
+        <div class="empty-state">
+          <div class="empty-icon">🩺</div>
+          <p>No predictions yet.</p>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% block title %}Prediction History{% endblock %}
+{% block page_title %}Prediction History{% endblock %}
+{% block breadcrumb %}Records → All predictions{% endblock %}
+
+{% block content %}
+
+<div class="filter-tabs mb-16">
+  <a href="{{ url_for('predictions.history') }}"
+     class="filter-tab {% if filter == 'all' %}active{% endif %}">All</a>
+  <a href="{{ url_for('predictions.history', type='diabetes') }}"
+     class="filter-tab {% if filter == 'diabetes' %}active{% endif %}">🩸 Diabetes</a>
+  <a href="{{ url_for('predictions.history', type='heart') }}"
+     class="filter-tab {% if filter == 'heart' %}active{% endif %}">❤️ Heart</a>
+  <a href="{{ url_for('predictions.history', type='skin') }}"
+     class="filter-tab {% if filter == 'skin' %}active{% endif %}">🔬 Skin</a>
+</div>
+
+<div class="card animate-in">
+  <div class="card-header">
+    <div class="card-title">
+      {{ predictions | length }} prediction{{ 's' if predictions | length != 1 }}
+      {% if filter != 'all' %}<span style="color:var(--text-muted);font-weight:400;"> · {{ filter | title }}</span>{% endif %}
+    </div>
+    <div style="display:flex;gap:8px;">
+      <a href="{{ url_for('predictions.diabetes_page') }}" class="btn btn-primary btn-sm">+ New Test</a>
+    </div>
+  </div>
+  <div class="card-body" style="padding-top:0;">
+    {% if predictions %}
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Type</th>
+            <th>Result</th>
+            <th>Confidence</th>
+            <th>Risk</th>
+            <th>Date & Time</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for p in predictions %}
+          <tr>
+            <td class="text-muted text-small">#{{ p.id }}</td>
+            <td>
+              <span style="font-size:1rem;">{{ p.type_icon }}</span>
+              <span style="margin-left:6px;font-weight:500;font-size:0.87rem;">{{ p.type_label }}</span>
+            </td>
+            <td style="font-size:0.87rem;">{{ p.result }}</td>
+            <td>
+              <div style="display:flex;align-items:center;gap:8px;">
+                <div style="width:80px;height:6px;background:var(--border);border-radius:3px;overflow:hidden;">
+                  <div style="width:{{ p.confidence }}%;height:100%;border-radius:3px;background:{{ '#34d399' if p.risk_level == 'low' else '#ff5c72' }};"></div>
+                </div>
+                <span style="font-size:0.82rem;font-weight:600;color:{{ '#059669' if p.risk_level == 'low' else '#dc2626' }};">
+                  {{ p.confidence | pct }}
+                </span>
+              </div>
+            </td>
+            <td><span class="badge badge-{{ p.risk_level }}">{{ p.risk_level | upper }}</span></td>
+            <td class="text-muted text-small">
+              {{ p.created_at.strftime('%d %b %Y, %H:%M') }}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% else %}
+    <div class="empty-state" style="padding: 60px 20px;">
+      <div class="empty-icon">📋</div>
+      <p style="margin-bottom:16px;">No predictions found for this filter.</p>
+      <a href="{{ url_for('predictions.diabetes_page') }}" class="btn btn-primary btn-sm">Run First Diagnosis</a>
+    </div>
+    {% endif %}
+  </div>
+</div>
+
+{% endblock %}

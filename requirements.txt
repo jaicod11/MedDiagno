@@ -1,0 +1,13 @@
+flask==3.0.3
+flask-login==0.6.3
+flask-wtf==1.2.1
+pymongo[srv]==4.7.2
+flask-pymongo==2.3.0
+xgboost==2.0.3
+scikit-learn==1.4.2
+joblib==1.4.0
+numpy==1.26.4
+pillow==10.3.0
+python-dotenv==1.0.1
+werkzeug==3.0.3
+gunicorn==22.0.0

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MedDiagno — AI Medical Diagnostics</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+</head>
+<body>
+<div class="landing">
+
+  <!-- Nav -->
+  <nav class="landing-nav">
+    <div style="display:flex;align-items:center;gap:10px;">
+      <div class="logo-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" style="width:20px;height:20px;color:#0d1117"><path d="M12 2L12 22M2 12L22 12"/></svg></div>
+      <span class="logo-text">Med<span>Diagno</span></span>
+    </div>
+    <div style="display:flex;gap:12px;">
+      <a href="{{ url_for('auth.login') }}" class="btn btn-ghost btn-sm">Sign In</a>
+      <a href="{{ url_for('auth.register') }}" class="btn btn-primary btn-sm">Get Started</a>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <div class="landing-hero">
+    <div class="hero-tag">AI-Powered Diagnostics</div>
+    <h1>Medical Insights<br>Powered by <span>Machine Learning</span></h1>
+    <p>Detect diabetes, heart disease, and skin cancer risk in seconds.<br>
+       Clinical-grade ML models with explainable results — built for your portfolio.</p>
+    <div class="landing-btns">
+      <a href="{{ url_for('auth.register') }}" class="btn btn-primary btn-lg">Start Free →</a>
+      <a href="{{ url_for('auth.login') }}" class="btn btn-ghost btn-lg">Sign In</a>
+    </div>
+  </div>
+
+  <!-- Accuracy strip -->
+  <div style="display:flex;justify-content:center;gap:40px;padding:0 40px 60px;flex-wrap:wrap;">
+    <div style="text-align:center;">
+      <div style="font-family:'Outfit',sans-serif;font-size:2rem;font-weight:700;color:#00d4aa;">96.7%</div>
+      <div style="font-size:0.78rem;color:rgba(255,255,255,0.4);margin-top:4px;">Diabetes Accuracy</div>
+    </div>
+    <div style="width:1px;background:rgba(255,255,255,0.08);"></div>
+    <div style="text-align:center;">
+      <div style="font-family:'Outfit',sans-serif;font-size:2rem;font-weight:700;color:#ff5c72;">88.7%</div>
+      <div style="font-size:0.78rem;color:rgba(255,255,255,0.4);margin-top:4px;">Heart Disease Accuracy</div>
+    </div>
+    <div style="width:1px;background:rgba(255,255,255,0.08);"></div>
+    <div style="text-align:center;">
+      <div style="font-family:'Outfit',sans-serif;font-size:2rem;font-weight:700;color:#60a5fa;">99.8%</div>
+      <div style="font-size:0.78rem;color:rgba(255,255,255,0.4);margin-top:4px;">Skin Analysis Accuracy</div>
+    </div>
+    <div style="width:1px;background:rgba(255,255,255,0.08);"></div>
+    <div style="text-align:center;">
+      <div style="font-family:'Outfit',sans-serif;font-size:2rem;font-weight:700;color:#f59e0b;">3</div>
+      <div style="font-size:0.78rem;color:rgba(255,255,255,0.4);margin-top:4px;">Diagnostic Models</div>
+    </div>
+  </div>
+
+  <!-- Features -->
+  <div class="landing-features">
+    <div style="text-align:center;margin-bottom:40px;">
+      <h2 style="font-family:'Outfit',sans-serif;font-size:1.7rem;font-weight:700;margin-bottom:10px;">Everything you need</h2>
+      <p style="color:rgba(255,255,255,0.45);font-size:0.9rem;">A complete end-to-end medical AI application</p>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">🩸</div>
+        <h3>Diabetes Screening</h3>
+        <p>XGBoost model trained on PIMA dataset. Input 8 clinical markers and get instant risk assessment with confidence score.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">❤️</div>
+        <h3>Heart Disease Detection</h3>
+        <p>Gradient Boosting model analyzing 13 cardiovascular parameters including ECG, cholesterol, and exercise data.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🔬</div>
+        <h3>Skin Cancer Analysis</h3>
+        <p>Upload a skin lesion image. Our model extracts color, texture, and asymmetry features to classify benign vs malignant.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📊</div>
+        <h3>Personal Dashboard</h3>
+        <p>Track all your predictions over time. Weekly activity charts, prediction history, and risk trend analysis.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🔐</div>
+        <h3>Secure Authentication</h3>
+        <p>Full user accounts with hashed passwords, persistent sessions, and private prediction history per user.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">⚡</div>
+        <h3>Real-time Inference</h3>
+        <p>Models loaded in memory with lazy caching. Results delivered in under 100ms for instant clinical feedback.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div style="text-align:center;padding:60px 40px 80px;border-top:1px solid rgba(255,255,255,0.06);">
+    <h2 style="font-family:'Outfit',sans-serif;font-size:1.6rem;font-weight:700;margin-bottom:12px;">Ready to try it?</h2>
+    <p style="color:rgba(255,255,255,0.45);margin-bottom:28px;font-size:0.9rem;">Create a free account and run your first diagnosis in under a minute.</p>
+    <a href="{{ url_for('auth.register') }}" class="btn btn-primary btn-lg">Create Free Account →</a>
+  </div>
+
+</div>
+</body>
+</html>

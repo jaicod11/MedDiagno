@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+{% block title %}Skin Analysis{% endblock %}
+{% block page_title %}Skin Cancer Analysis{% endblock %}
+{% block breadcrumb %}Diagnostics → Skin Analysis{% endblock %}
+
+{% block content %}
+<div class="grid-3">
+
+  <div class="card animate-in">
+    <div class="card-header">
+      <div class="card-title">🔬 Upload Skin Lesion Image</div>
+      <span class="badge badge-skin">GBM · 99.8%</span>
+    </div>
+    <div class="card-body">
+      <form id="skinForm" enctype="multipart/form-data" novalidate>
+
+        <div class="upload-zone" id="uploadZone">
+          <div class="upload-icon">📸</div>
+          <div class="upload-text">Click to upload or drag & drop</div>
+          <div class="upload-hint">PNG, JPG up to 16MB · Dermoscopy or close-up photos</div>
+          <img id="imgPreview" class="preview-img" style="display:none;" alt="Preview">
+        </div>
+
+        <input type="file" id="fileInput" name="file"
+               accept=".png,.jpg,.jpeg" style="display:none;">
+
+        <div style="margin-top:16px;padding:14px;background:var(--surface2);border-radius:10px;border:1px solid var(--border);font-size:0.82rem;color:var(--text-muted);line-height:1.6;">
+          <strong style="color:var(--text);">How it works:</strong><br>
+          The model extracts 10 features from your image: RGB channel statistics, dark pixel ratio (melanin proxy), spatial asymmetry, color variance, and border irregularity — then classifies using a trained GBM.
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-full btn-lg" data-label="Analyze Image" style="margin-top:16px;">
+          Analyze Image
+          <span class="loading-spinner"></span>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Right panel -->
+  <div style="display:flex;flex-direction:column;gap:18px;">
+
+    <div class="result-card" id="resultCard">
+      <div class="result-header">
+        <div class="result-icon">🩺</div>
+        <div><div class="result-title">—</div></div>
+      </div>
+      <div class="confidence-bar-wrap">
+        <div class="confidence-label">
+          <span>Confidence</span><span class="conf-val">—</span>
+        </div>
+        <div class="confidence-bar">
+          <div class="confidence-fill" style="width:0%"></div>
+        </div>
+      </div>
+      <div class="result-disclaimer">
+        ⚠️ Not a dermatology diagnosis. Always consult a licensed dermatologist for skin concerns.
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><div class="card-title">About this model</div></div>
+      <div class="card-body" style="padding-top:12px;">
+        <div style="display:flex;flex-direction:column;gap:0;font-size:0.84rem;">
+          <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);"><span class="text-muted">Algorithm</span><strong>Gradient Boosting</strong></div>
+          <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);"><span class="text-muted">Accuracy</span><strong style="color:var(--info);">99.8%</strong></div>
+          <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);"><span class="text-muted">Features</span><strong>10 image statistics</strong></div>
+          <div style="display:flex;justify-content:space-between;padding:8px 0;"><span class="text-muted">Input</span><strong>PNG / JPG image</strong></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><div class="card-title">ABCDE Warning Signs</div></div>
+      <div class="card-body" style="padding-top:12px;font-size:0.83rem;display:flex;flex-direction:column;gap:10px;">
+        <div><strong style="color:var(--danger);">A</strong> <span class="text-muted">— Asymmetry of shape</span></div>
+        <div><strong style="color:var(--warning);">B</strong> <span class="text-muted">— Border irregularity</span></div>
+        <div><strong style="color:var(--info);">C</strong> <span class="text-muted">— Color variation</span></div>
+        <div><strong style="color:var(--success);">D</strong> <span class="text-muted">— Diameter > 6mm</span></div>
+        <div><strong style="color:var(--primary);">E</strong> <span class="text-muted">— Evolution over time</span></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><div class="card-title">Extracted Features</div></div>
+      <div class="card-body" style="padding-top:8px;font-size:0.8rem;color:var(--text-muted);display:flex;flex-direction:column;gap:6px;">
+        <div>📊 Mean RGB channels (R, G, B)</div>
+        <div>📈 Std deviation per channel</div>
+        <div>🌑 Dark pixel ratio (melanin proxy)</div>
+        <div>↔️ Left/right spatial asymmetry</div>
+        <div>🎨 Color variance across pixels</div>
+        <div>📐 Border irregularity score</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  setupPredictForm("skinForm", "{{ url_for('predictions.api_skin') }}");
+</script>
+{% endblock %}

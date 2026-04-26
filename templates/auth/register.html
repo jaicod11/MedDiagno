@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Account — MedDiagno</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+</head>
+<body>
+<div class="auth-layout">
+
+  <div class="auth-left">
+    <div class="auth-visual">
+      <div class="auth-visual-icon">✨</div>
+      <h1>Get Started</h1>
+      <p>Create your free account and run your first AI-powered medical screening in under a minute.</p>
+      <div class="auth-features">
+        <div class="auth-feature">
+          <div class="auth-feature-icon">🔐</div>
+          <span class="auth-feature-text">Secure account with bcrypt password hashing</span>
+        </div>
+        <div class="auth-feature">
+          <div class="auth-feature-icon">📈</div>
+          <span class="auth-feature-text">Personal dashboard with prediction history</span>
+        </div>
+        <div class="auth-feature">
+          <div class="auth-feature-icon">⚡</div>
+          <span class="auth-feature-text">Unlimited screenings — completely free</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="auth-right">
+    <div class="auth-form-wrap">
+      <a href="{{ url_for('dashboard.landing') }}" style="font-size:0.82rem;color:var(--text-muted);display:flex;align-items:center;gap:5px;margin-bottom:28px;">
+        ← Back to home
+      </a>
+      <h2>Create account</h2>
+      <p class="subtitle">Join MedDiagno — it's free</p>
+
+      <form method="POST" action="{{ url_for('auth.register') }}" novalidate>
+        <div style="display:flex;flex-direction:column;gap:13px;">
+
+          <div class="form-group">
+            <label for="name">Full name</label>
+            <input type="text" id="name" name="name"
+                   placeholder="Jane Doe"
+                   value="{{ form_data.get('name', '') }}"
+                   class="{{ 'error-field' if errors.get('name') }}"
+                   required autocomplete="name">
+            {% if errors.get('name') %}<span class="error-msg">{{ errors.name }}</span>{% endif %}
+          </div>
+
+          <div class="form-group">
+            <label for="email">Email address</label>
+            <input type="email" id="email" name="email"
+                   placeholder="you@example.com"
+                   value="{{ form_data.get('email', '') }}"
+                   class="{{ 'error-field' if errors.get('email') }}"
+                   required autocomplete="email">
+            {% if errors.get('email') %}<span class="error-msg">{{ errors.email }}</span>{% endif %}
+          </div>
+
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password"
+                   placeholder="Min. 8 characters"
+                   class="{{ 'error-field' if errors.get('password') }}"
+                   required autocomplete="new-password">
+            {% if errors.get('password') %}<span class="error-msg">{{ errors.password }}</span>{% endif %}
+          </div>
+
+          <div class="form-group">
+            <label for="confirm_password">Confirm password</label>
+            <input type="password" id="confirm_password" name="confirm_password"
+                   placeholder="Repeat your password"
+                   class="{{ 'error-field' if errors.get('confirm') }}"
+                   required autocomplete="new-password">
+            {% if errors.get('confirm') %}<span class="error-msg">{{ errors.confirm }}</span>{% endif %}
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-full" style="margin-top:4px;">
+            Create Account →
+          </button>
+
+          <p style="font-size:0.73rem;color:var(--text-light);text-align:center;line-height:1.5;">
+            By creating an account you agree this is a demo application.<br>
+            Do not enter real patient data.
+          </p>
+        </div>
+      </form>
+
+      <hr class="divider">
+      <div class="auth-link">
+        Already have an account? <a href="{{ url_for('auth.login') }}">Sign in</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

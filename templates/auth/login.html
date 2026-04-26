@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign In — MedDiagno</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+</head>
+<body>
+<div class="auth-layout">
+
+  <!-- Left panel -->
+  <div class="auth-left">
+    <div class="auth-visual">
+      <div class="auth-visual-icon">🏥</div>
+      <h1>MedDiagno</h1>
+      <p>AI-powered diagnostic screening for diabetes, heart disease, and skin cancer — in seconds.</p>
+      <div class="auth-features">
+        <div class="auth-feature">
+          <div class="auth-feature-icon">🩸</div>
+          <span class="auth-feature-text">Diabetes risk screening with XGBoost (96.7% accuracy)</span>
+        </div>
+        <div class="auth-feature">
+          <div class="auth-feature-icon">❤️</div>
+          <span class="auth-feature-text">Heart disease detection from 13 clinical markers</span>
+        </div>
+        <div class="auth-feature">
+          <div class="auth-feature-icon">🔬</div>
+          <span class="auth-feature-text">Skin lesion classification from image upload</span>
+        </div>
+        <div class="auth-feature">
+          <div class="auth-feature-icon">📊</div>
+          <span class="auth-feature-text">Personal dashboard with full prediction history</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right form -->
+  <div class="auth-right">
+    <div class="auth-form-wrap">
+      <a href="{{ url_for('dashboard.landing') }}" style="font-size:0.82rem;color:var(--text-muted);display:flex;align-items:center;gap:5px;margin-bottom:28px;">
+        ← Back to home
+      </a>
+      <h2>Welcome back</h2>
+      <p class="subtitle">Sign in to your MedDiagno account</p>
+
+      {% if error %}
+        <div class="flash flash-error" style="margin-bottom:16px;">{{ error }}</div>
+      {% endif %}
+
+      <form method="POST" action="{{ url_for('auth.login') }}" novalidate>
+        <div style="display:flex;flex-direction:column;gap:14px;">
+          <div class="form-group">
+            <label for="email">Email address</label>
+            <input type="email" id="email" name="email" placeholder="you@example.com"
+                   required autocomplete="email">
+          </div>
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" placeholder="••••••••"
+                   required autocomplete="current-password">
+          </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;font-size:0.82rem;">
+            <label style="display:flex;align-items:center;gap:6px;cursor:pointer;color:var(--text-muted);">
+              <input type="checkbox" name="remember" style="width:auto;border:none;padding:0;">
+              Remember me
+            </label>
+          </div>
+          <button type="submit" class="btn btn-primary btn-full" style="margin-top:4px;">
+            Sign In →
+          </button>
+        </div>
+      </form>
+
+      <hr class="divider">
+      <div class="auth-link">
+        Don't have an account? <a href="{{ url_for('auth.register') }}">Create one free</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

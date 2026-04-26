@@ -1,0 +1,170 @@
+{% extends "base.html" %}
+{% block title %}Heart Disease{% endblock %}
+{% block page_title %}Heart Disease Screening{% endblock %}
+{% block breadcrumb %}Diagnostics → Heart Disease{% endblock %}
+
+{% block content %}
+<div class="grid-3">
+
+  <div class="card animate-in">
+    <div class="card-header">
+      <div class="card-title">❤️ Cardiovascular Parameters</div>
+      <span class="badge badge-heart">GBM · 88.7%</span>
+    </div>
+    <div class="card-body">
+      <form id="heartForm" novalidate>
+        <div class="form-grid mb-16">
+
+          <div class="form-group">
+            <div class="range-header"><label for="age">Age (years)</label><span class="range-val" id="age_val">50</span></div>
+            <input type="range" id="age" name="age" min="29" max="77" value="50" step="1">
+          </div>
+
+          <div class="form-group">
+            <label for="sex">Biological Sex</label>
+            <select id="sex" name="sex">
+              <option value="1">Male</option>
+              <option value="0">Female</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="cp">Chest Pain Type</label>
+            <select id="cp" name="cp">
+              <option value="0">Typical Angina</option>
+              <option value="1">Atypical Angina</option>
+              <option value="2">Non-Anginal Pain</option>
+              <option value="3">Asymptomatic</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <div class="range-header"><label for="trestbps">Resting BP (mmHg)</label><span class="range-val" id="trestbps_val">130</span></div>
+            <input type="range" id="trestbps" name="trestbps" min="90" max="200" value="130" step="1">
+          </div>
+
+          <div class="form-group">
+            <div class="range-header"><label for="chol">Cholesterol (mg/dL)</label><span class="range-val" id="chol_val">240</span></div>
+            <input type="range" id="chol" name="chol" min="130" max="420" value="240" step="1">
+          </div>
+
+          <div class="form-group">
+            <label for="fbs">Fasting Blood Sugar > 120</label>
+            <select id="fbs" name="fbs">
+              <option value="0">No (Normal)</option>
+              <option value="1">Yes (Elevated)</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="restecg">Resting ECG</label>
+            <select id="restecg" name="restecg">
+              <option value="0">Normal</option>
+              <option value="1">ST-T Abnormality</option>
+              <option value="2">Left Ventricular Hypertrophy</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <div class="range-header"><label for="thalach">Max Heart Rate</label><span class="range-val" id="thalach_val">150</span></div>
+            <input type="range" id="thalach" name="thalach" min="70" max="202" value="150" step="1">
+          </div>
+
+          <div class="form-group">
+            <label for="exang">Exercise-Induced Angina</label>
+            <select id="exang" name="exang">
+              <option value="0">No</option>
+              <option value="1">Yes</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <div class="range-header"><label for="oldpeak">ST Depression</label><span class="range-val" id="oldpeak_val">1.0</span></div>
+            <input type="range" id="oldpeak" name="oldpeak" min="0" max="6.2" value="1.0" step="0.1">
+          </div>
+
+          <div class="form-group">
+            <label for="slope">ST Slope</label>
+            <select id="slope" name="slope">
+              <option value="0">Upsloping</option>
+              <option value="1">Flat</option>
+              <option value="2">Downsloping</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <div class="range-header"><label for="ca">Major Vessels (0–3)</label><span class="range-val" id="ca_val">0</span></div>
+            <input type="range" id="ca" name="ca" min="0" max="3" value="0" step="1">
+          </div>
+
+          <div class="form-group full">
+            <label for="thal">Thalassemia</label>
+            <select id="thal" name="thal">
+              <option value="0">Normal</option>
+              <option value="1">Fixed Defect</option>
+              <option value="2">Reversible Defect</option>
+              <option value="3">Unknown</option>
+            </select>
+          </div>
+
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-full btn-lg" data-label="Analyze">
+          Analyze Risk
+          <span class="loading-spinner"></span>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Right panel -->
+  <div style="display:flex;flex-direction:column;gap:18px;">
+
+    <div class="result-card" id="resultCard">
+      <div class="result-header">
+        <div class="result-icon">🩺</div>
+        <div><div class="result-title">—</div></div>
+      </div>
+      <div class="confidence-bar-wrap">
+        <div class="confidence-label">
+          <span>Confidence</span><span class="conf-val">—</span>
+        </div>
+        <div class="confidence-bar">
+          <div class="confidence-fill" style="width:0%"></div>
+        </div>
+      </div>
+      <div class="result-disclaimer">
+        ⚠️ AI screening only — not a clinical diagnosis. Consult a cardiologist.
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><div class="card-title">About this model</div></div>
+      <div class="card-body" style="padding-top:12px;">
+        <div style="display:flex;flex-direction:column;gap:0;font-size:0.84rem;">
+          <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);"><span class="text-muted">Algorithm</span><strong>Gradient Boosting</strong></div>
+          <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);"><span class="text-muted">Accuracy</span><strong style="color:var(--danger);">88.7%</strong></div>
+          <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);"><span class="text-muted">Parameters</span><strong>13 features</strong></div>
+          <div style="display:flex;justify-content:space-between;padding:8px 0;"><span class="text-muted">Pipeline</span><strong>Scaler + GBM</strong></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><div class="card-title">Cardiac Risk Indicators</div></div>
+      <div class="card-body" style="padding-top:12px;font-size:0.83rem;color:var(--text-muted);display:flex;flex-direction:column;gap:8px;">
+        <div>🔴 <strong>Chest Pain Type</strong> — strongest signal</div>
+        <div>🟠 <strong>ST Depression</strong> — ischemia indicator</div>
+        <div>🟡 <strong>Thalassemia</strong> — blood disorder marker</div>
+        <div>🟢 <strong>Max Heart Rate</strong> — exercise capacity</div>
+        <div>🔵 <strong>Vessels Colored</strong> — angiography result</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  setupPredictForm("heartForm", "{{ url_for('predictions.api_heart') }}");
+</script>
+{% endblock %}

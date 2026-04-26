@@ -1,0 +1,145 @@
+{% extends "base.html" %}
+{% block title %}Diabetes Screening{% endblock %}
+{% block page_title %}Diabetes Screening{% endblock %}
+{% block breadcrumb %}Diagnostics → Diabetes{% endblock %}
+
+{% block content %}
+<div class="grid-3">
+
+  <!-- Form -->
+  <div class="card animate-in">
+    <div class="card-header">
+      <div class="card-title">🩸 Enter Clinical Markers</div>
+      <span class="badge badge-diabetes">XGBoost · 96.7%</span>
+    </div>
+    <div class="card-body">
+      <form id="diabetesForm" novalidate>
+
+        <div class="form-grid mb-16">
+
+          <div class="form-group">
+            <div class="range-header"><label for="pregnancies">Pregnancies</label><span class="range-val" id="pregnancies_val">2</span></div>
+            <input type="range" id="pregnancies" name="pregnancies" min="0" max="17" value="2" step="1">
+            <span class="field-hint">Number of pregnancies</span>
+          </div>
+
+          <div class="form-group">
+            <div class="range-header"><label for="glucose">Glucose (mg/dL)</label><span class="range-val" id="glucose_val">100</span></div>
+            <input type="range" id="glucose" name="glucose" min="44" max="280" value="100" step="1">
+            <span class="field-hint">Plasma glucose concentration</span>
+          </div>
+
+          <div class="form-group">
+            <div class="range-header"><label for="blood_pressure">Blood Pressure (mmHg)</label><span class="range-val" id="blood_pressure_val">72</span></div>
+            <input type="range" id="blood_pressure" name="blood_pressure" min="0" max="122" value="72" step="1">
+            <span class="field-hint">Diastolic blood pressure</span>
+          </div>
+
+          <div class="form-group">
+            <div class="range-header"><label for="skin_thickness">Skin Thickness (mm)</label><span class="range-val" id="skin_thickness_val">23</span></div>
+            <input type="range" id="skin_thickness" name="skin_thickness" min="0" max="99" value="23" step="1">
+            <span class="field-hint">Triceps skinfold thickness</span>
+          </div>
+
+          <div class="form-group">
+            <div class="range-header"><label for="insulin">Insulin (μU/mL)</label><span class="range-val" id="insulin_val">79</span></div>
+            <input type="range" id="insulin" name="insulin" min="0" max="500" value="79" step="1">
+            <span class="field-hint">2-hour serum insulin</span>
+          </div>
+
+          <div class="form-group">
+            <div class="range-header"><label for="bmi">BMI</label><span class="range-val" id="bmi_val">25.0</span></div>
+            <input type="range" id="bmi" name="bmi" min="10" max="67" value="25" step="0.1">
+            <span class="field-hint">Body mass index</span>
+          </div>
+
+          <div class="form-group">
+            <div class="range-header"><label for="diabetes_pedigree">Pedigree Function</label><span class="range-val" id="diabetes_pedigree_val">0.35</span></div>
+            <input type="range" id="diabetes_pedigree" name="diabetes_pedigree" min="0.07" max="2.42" value="0.35" step="0.01">
+            <span class="field-hint">Diabetes pedigree function</span>
+          </div>
+
+          <div class="form-group">
+            <div class="range-header"><label for="age">Age (years)</label><span class="range-val" id="age_val">30</span></div>
+            <input type="range" id="age" name="age" min="21" max="81" value="30" step="1">
+            <span class="field-hint">Patient age</span>
+          </div>
+
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-full btn-lg" data-label="Analyze">
+          Analyze Risk
+          <span class="loading-spinner"></span>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Result + Info -->
+  <div style="display:flex;flex-direction:column;gap:18px;">
+
+    <!-- Result -->
+    <div class="result-card" id="resultCard">
+      <div class="result-header">
+        <div class="result-icon">🩺</div>
+        <div><div class="result-title">—</div></div>
+      </div>
+      <div class="confidence-bar-wrap">
+        <div class="confidence-label">
+          <span>Confidence</span>
+          <span class="conf-val">—</span>
+        </div>
+        <div class="confidence-bar">
+          <div class="confidence-fill" style="width:0%"></div>
+        </div>
+      </div>
+      <div class="result-disclaimer">
+        ⚠️ This is an AI screening tool, not a medical diagnosis. Always consult a qualified physician.
+      </div>
+    </div>
+
+    <!-- About model -->
+    <div class="card">
+      <div class="card-header"><div class="card-title">About this model</div></div>
+      <div class="card-body" style="padding-top:12px;">
+        <div style="display:flex;flex-direction:column;gap:10px;font-size:0.84rem;">
+          <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);">
+            <span class="text-muted">Algorithm</span><strong>XGBoost Classifier</strong>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);">
+            <span class="text-muted">Accuracy</span><strong style="color:var(--primary);">96.7%</strong>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);">
+            <span class="text-muted">Training samples</span><strong>2,400</strong>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);">
+            <span class="text-muted">Features</span><strong>8 clinical markers</strong>
+          </div>
+          <div style="display:flex;justify-content:space-between;padding:8px 0;">
+            <span class="text-muted">Inference</span><strong>StandardScaler + XGB</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Risk factors -->
+    <div class="card">
+      <div class="card-header"><div class="card-title">Key Risk Factors</div></div>
+      <div class="card-body" style="padding-top:12px;">
+        <div style="display:flex;flex-direction:column;gap:8px;font-size:0.83rem;color:var(--text-muted);">
+          <div>🔴 <strong>Glucose</strong> — strongest predictor</div>
+          <div>🟠 <strong>BMI</strong> — body mass index</div>
+          <div>🟡 <strong>Age</strong> — risk increases after 35</div>
+          <div>🟢 <strong>Pedigree</strong> — family history factor</div>
+          <div>🔵 <strong>Insulin</strong> — metabolic function</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  setupPredictForm("diabetesForm", "{{ url_for('predictions.api_diabetes') }}");
+</script>
+{% endblock %}
